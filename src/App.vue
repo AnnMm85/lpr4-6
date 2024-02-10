@@ -1,10 +1,52 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <div class="navDiv">
+      <div>
+        <router-link to="/">Home</router-link>
+        |
+      </div>
+      <div v-if="!isAuthenticated">
+        <router-link to="/login">Login</router-link>
+        |
+        <router-link to="/register">Register</router-link>
+        |
+      </div>
+      <div v-else>
+        <router-link to="/cart">Cart</router-link>
+        |
+        <router-link to="/order">Оформленные заказы</router-link>
+        |
+        <a href="#" @click="logout">Выход</a>
+      </div>
+    </div>
+
   </nav>
   <router-view/>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      url: "https://jurapro.bhuser.ru/api-shop",
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('userToken');
+      this.$router.push('/');
+      location.reload()
+    }
+  },
+  computed: {
+    isAuthenticated() {
+      return !!localStorage.getItem('userToken');
+    }
+  }
+
+}
+</script>
+
 
 <style>
 #app {
@@ -28,3 +70,5 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+<script setup>
+</script>
